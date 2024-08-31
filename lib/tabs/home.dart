@@ -2,9 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/apis/api_manager.dart';
 import 'package:movie_app/my_theme_data.dart';
-import 'package:movie_app/popular_items.dart';
-import 'package:movie_app/top_rated_items.dart';
-import 'package:movie_app/upcoming_items.dart';
+import 'package:movie_app/widgets/popular_items.dart';
+import 'package:movie_app/widgets/top_rated_items.dart';
+import 'package:movie_app/widgets/upcoming_items.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
@@ -19,7 +19,7 @@ class Home extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Text("something went wrong");
+            return Center(child: Text("something went wrong"));
           }
           var popular = snapshot.data?.results ?? [];
           return Column(
@@ -48,7 +48,7 @@ class Home extends StatelessWidget {
                         return Center(child: CircularProgressIndicator());
                       }
                       if (snapshot.hasError) {
-                        return Text("something went wrong");
+                        return Center(child: Text("something went wrong"));
                       }
                       var upcoming = snapshot.data?.results ?? [];
                       return Padding(
@@ -100,7 +100,7 @@ class Home extends StatelessWidget {
                         return Center(child: CircularProgressIndicator());
                       }
                       if (snapshot.hasError) {
-                        return Text("something went wrong");
+                        return Center(child: Text("something went wrong"));
                       }
                       var topRated = snapshot.data?.results ?? [];
                       return Padding(
