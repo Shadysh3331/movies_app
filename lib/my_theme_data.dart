@@ -14,6 +14,15 @@ class MyThemeData
 
 static ThemeData theme=ThemeData(
   scaffoldBackgroundColor: MyThemeData.primaryColor,
+  appBarTheme: AppBarTheme(
+    color: Colors.transparent,
+      iconTheme:IconThemeData(color: MyThemeData.whiteColor,size: 30),
+    titleTextStyle: GoogleFonts.inter(
+        fontSize: 20,
+        fontWeight: FontWeight.w400,
+        color: MyThemeData.whiteColor
+    ),
+  ),
   textTheme:TextTheme(
     bodyLarge: GoogleFonts.inter(
       fontSize: 18,

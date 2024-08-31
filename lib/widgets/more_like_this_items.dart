@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/models/TopRatedResponse.dart';
+import 'package:movie_app/models/MoreLikeThisResponse.dart';
 import 'package:movie_app/my_theme_data.dart';
 import 'package:movie_app/utils.dart';
 
-class TopRatedItems extends StatelessWidget {
-  final TopRatedResults topRatedResults;
-
-  TopRatedItems({required this.topRatedResults, super.key});
+class MoreLikeThisItems extends StatelessWidget {
+  MoreLikeThisResults moreLikeThisResults;
+   MoreLikeThisItems({required this.moreLikeThisResults,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +27,7 @@ class TopRatedItems extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
                       child: Image.network(
-                        "$imageUrl${topRatedResults.posterPath}",
+                        "$imageUrl${moreLikeThisResults.posterPath}",
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -43,7 +42,7 @@ class TopRatedItems extends StatelessWidget {
                         child: Icon(
                           Icons.add,
                           color: Colors.white,
-                          size: 30,
+                          size: 25,
                         ),
                       ),
                     ),
@@ -58,7 +57,7 @@ class TopRatedItems extends StatelessWidget {
                     Icon(Icons.star, color: MyThemeData.yellowColor, size: 15),
                     SizedBox(width: 4),
                     Text(
-                      topRatedResults.voteAverage.toString().substring(0, 3),
+                      moreLikeThisResults.voteAverage.toString().substring(0, 3),
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ],
@@ -68,7 +67,7 @@ class TopRatedItems extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
-                  topRatedResults.title ?? "",
+                  moreLikeThisResults.title ?? "",
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontSize: 12,
                       fontWeight: FontWeight.w400
@@ -81,7 +80,7 @@ class TopRatedItems extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(
-                  topRatedResults.releaseDate?.substring(0, 4) ?? "",
+                  moreLikeThisResults.releaseDate?.substring(0, 4) ?? "",
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
