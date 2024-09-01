@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:movie_app/models/BrowseResponse.dart';
 import 'package:movie_app/models/MoreLikeThisResponse.dart';
 import 'package:movie_app/models/MovieDetailsResponse.dart';
+import 'package:movie_app/models/MovieDiscoverResponse.dart';
 import 'package:movie_app/models/PopularResponse.dart';
 import 'package:movie_app/models/SearchResponse.dart';
 import 'package:movie_app/models/TopRatedResponse.dart';
@@ -74,5 +76,28 @@ static Future<PopularResponse> getPopular()async{
     Map<String,dynamic> jsonFormat=jsonDecode(response.body);
     SearchResponse searchResponse=SearchResponse.fromJson(jsonFormat);
     return searchResponse;
+  }
+
+  // https://api.themoviedb.org/3/genre/movie/list?apiKey=22d1f1116a2c8e99422e87fcedacb1e7
+  static Future<BrowseResponse> getCategory()async{
+    Uri url=Uri.https("api.themoviedb.org","/3/genre/movie/list",{
+      "api_key":"22d1f1116a2c8e99422e87fcedacb1e7"
+    });
+    http.Response response=await http.get(url);
+    Map<String,dynamic> jsonFormat=jsonDecode(response.body);
+    BrowseResponse browseResponse=BrowseResponse.fromJson(jsonFormat);
+    return browseResponse;
+  }
+
+  //https://api.themoviedb.org/3/discover/movie?apiKey=22d1f1116a2c8e99422e87fcedacb1e7
+  static Future<MovieDiscoverResponse> getMovieDiscover(int genreId)async{
+    Uri url=Uri.https("api.themoviedb.org","/3/discover/movie",{
+      "api_key":"22d1f1116a2c8e99422e87fcedacb1e7",
+      "with_genres":genreId.toString()
+    });
+    http.Response response=await http.get(url);
+    Map<String,dynamic> jsonFormat=jsonDecode(response.body);
+    MovieDiscoverResponse movieDiscoverResponse=MovieDiscoverResponse.fromJson(jsonFormat);
+    return movieDiscoverResponse;
   }
 }
