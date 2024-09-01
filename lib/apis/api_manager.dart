@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:movie_app/models/MoreLikeThisResponse.dart';
 import 'package:movie_app/models/MovieDetailsResponse.dart';
 import 'package:movie_app/models/PopularResponse.dart';
+import 'package:movie_app/models/SearchResponse.dart';
 import 'package:movie_app/models/TopRatedResponse.dart';
 import 'package:movie_app/models/UpcomingResponse.dart';
 
@@ -63,4 +64,15 @@ static Future<PopularResponse> getPopular()async{
     return moreLikeThisResponse;
   }
 
+  // https://api.themoviedb.org/3/search/movie?apiKey=22d1f1116a2c8e99422e87fcedacb1e7
+  static Future<SearchResponse> getSearch(String query)async{
+    Uri url=Uri.https("api.themoviedb.org","/3/search/movie",{
+      "api_key":"22d1f1116a2c8e99422e87fcedacb1e7",
+      "query":query
+    });
+    http.Response response=await http.get(url);
+    Map<String,dynamic> jsonFormat=jsonDecode(response.body);
+    SearchResponse searchResponse=SearchResponse.fromJson(jsonFormat);
+    return searchResponse;
+  }
 }
