@@ -18,9 +18,13 @@ class SearchItem extends StatelessWidget {
       },
       child: Row(
         children: [
-          Image.network(
-            "$imageUrl${searchResults.posterPath}",
-            height: MediaQuery.of(context).size.height * .2,
+          Container(
+            height: 190,
+            width: 130,
+            child: Image.network(
+              "$imageUrl${searchResults.posterPath}",
+              height: MediaQuery.of(context).size.height * .2,
+            ),
           ),
           SizedBox(
             width: 8,

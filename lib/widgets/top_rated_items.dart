@@ -1,21 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/firebase_functions.dart';
 import 'package:movie_app/models/TopRatedResponse.dart';
+import 'package:movie_app/models/user_model.dart';
 import 'package:movie_app/my_theme_data.dart';
 import 'package:movie_app/utils.dart';
 
 import '../screens/movie_details.dart';
 
-class TopRatedItems extends StatelessWidget {
+class TopRatedItems extends StatefulWidget {
+  UserModel model;
    TopRatedResults topRatedResults;
 
-  TopRatedItems({required this.topRatedResults, super.key});
+  TopRatedItems({required this.model,required this.topRatedResults, super.key});
 
   @override
+  State<TopRatedItems> createState() => _TopRatedItemsState();
+}
+
+class _TopRatedItemsState extends State<TopRatedItems> {
+  @override
   Widget build(BuildContext context) {
+    void addToWatchlist(BuildContext context) {
+      final userModel = UserModel(
+        image: "$imageUrl${widget.topRatedResults.posterPath}",
+        title: widget.topRatedResults.title ?? "",
+        releaseDate: widget.topRatedResults.releaseDate?.substring(0, 4) ?? "",
+        isDone: false,
+      );
+
+      FirebaseFunctions().addUser(userModel);
+    }
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, MovieDetails.routName,
-            arguments:topRatedResults.id
+            arguments:widget.topRatedResults.id
         );
       },
       child: Padding(
@@ -36,7 +54,7 @@ class TopRatedItems extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: Image.network(
-                          "$imageUrl${topRatedResults.posterPath}",
+                          "$imageUrl${widget.topRatedResults.posterPath}",
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -44,18 +62,32 @@ class TopRatedItems extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                         child: Container(
-                          padding: EdgeInsets.all(6),
-                          color: Color(0xff514F4F),
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 25,
+                          height: 40,
+                          width: 40,
+                          color: widget.model.isDone ? MyThemeData.yellowColor : Color(0xff514F4F),
+                          child: IconButton(
+                              iconSize: 25,
+                              color: Colors.white,
+                              onPressed: () {
+                                widget.model.isDone = true;
+                                addToWatchlist(context);
+                                setState(() {
+
+                                });
+                              },
+                              icon: widget.model.isDone
+                                  ? Icon(
+                                Icons.done,
+                              )
+                                  : Icon(
+                                Icons.add,
+                              )
                           ),
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
                 SizedBox(height: 8),
@@ -66,7 +98,7 @@ class TopRatedItems extends StatelessWidget {
                       Icon(Icons.star, color: MyThemeData.yellowColor, size: 15),
                       SizedBox(width: 4),
                       Text(
-                        topRatedResults.voteAverage.toString().substring(0, 3),
+                        widget.topRatedResults.voteAverage.toString().substring(0, 3),
                         style: TextStyle(color: Colors.white, fontSize: 12),
                       ),
                     ],
@@ -76,7 +108,7 @@ class TopRatedItems extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
-                    topRatedResults.title ?? "",
+                    widget.topRatedResults.title ?? "",
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w400
@@ -89,7 +121,7 @@ class TopRatedItems extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
-                    topRatedResults.releaseDate?.substring(0, 4) ?? "",
+                    widget.topRatedResults.releaseDate?.substring(0, 4) ?? "",
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),

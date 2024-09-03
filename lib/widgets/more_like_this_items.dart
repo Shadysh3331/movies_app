@@ -1,19 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/firebase_functions.dart';
 import 'package:movie_app/models/MoreLikeThisResponse.dart';
+import 'package:movie_app/models/user_model.dart';
 import 'package:movie_app/my_theme_data.dart';
 import 'package:movie_app/screens/movie_details.dart';
 import 'package:movie_app/utils.dart';
 
-class MoreLikeThisItems extends StatelessWidget {
+class MoreLikeThisItems extends StatefulWidget {
+  UserModel model;
   MoreLikeThisResults moreLikeThisResults;
-   MoreLikeThisItems({required this.moreLikeThisResults,super.key});
+   MoreLikeThisItems({required this.model,required this.moreLikeThisResults,super.key});
 
   @override
+  State<MoreLikeThisItems> createState() => _MoreLikeThisItemsState();
+}
+
+class _MoreLikeThisItemsState extends State<MoreLikeThisItems> {
+  @override
   Widget build(BuildContext context) {
+    void addToWatchlist(BuildContext context) {
+      final userModel = UserModel(
+        image: "$imageUrl${widget.moreLikeThisResults.posterPath}",
+        title: widget.moreLikeThisResults.title ?? "",
+        releaseDate: widget.moreLikeThisResults.releaseDate?.substring(0, 4) ?? "",
+        isDone: false,
+      );
+
+      FirebaseFunctions().addUser(userModel);
+    }
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, MovieDetails.routName,
-            arguments: moreLikeThisResults.id
+            arguments: widget.moreLikeThisResults.id
         );
       },
       child: Padding(
@@ -34,7 +52,7 @@ class MoreLikeThisItems extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: Image.network(
-                          "$imageUrl${moreLikeThisResults.posterPath}",
+                          "$imageUrl${widget.moreLikeThisResults.posterPath}",
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -42,18 +60,32 @@ class MoreLikeThisItems extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(10),
                         child: Container(
-                          padding: EdgeInsets.all(6),
-                          color: Color(0xff514F4F),
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 25,
+                          height: 40,
+                          width: 40,
+                          color: widget.model.isDone ? MyThemeData.yellowColor : Color(0xff514F4F),
+                          child: IconButton(
+                              iconSize: 25,
+                              color: Colors.white,
+                              onPressed: () {
+                                widget.model.isDone = true;
+                                addToWatchlist(context);
+                                setState(() {
+
+                                });
+                              },
+                              icon: widget.model.isDone
+                                  ? Icon(
+                                Icons.done,
+                              )
+                                  : Icon(
+                                Icons.add,
+                              )
                           ),
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
                 SizedBox(height: 8),
@@ -64,7 +96,7 @@ class MoreLikeThisItems extends StatelessWidget {
                       Icon(Icons.star, color: MyThemeData.yellowColor, size: 15),
                       SizedBox(width: 4),
                       Text(
-                        moreLikeThisResults.voteAverage.toString().substring(0, 3),
+                        widget.moreLikeThisResults.voteAverage.toString().substring(0, 3),
                         style: TextStyle(color: Colors.white, fontSize: 12),
                       ),
                     ],
@@ -74,7 +106,7 @@ class MoreLikeThisItems extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
-                    moreLikeThisResults.title ?? "",
+                    widget.moreLikeThisResults.title ?? "",
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         fontSize: 12,
                         fontWeight: FontWeight.w400
@@ -87,7 +119,7 @@ class MoreLikeThisItems extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
-                    moreLikeThisResults.releaseDate?.substring(0, 4) ?? "",
+                    widget.moreLikeThisResults.releaseDate?.substring(0, 4) ?? "",
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),

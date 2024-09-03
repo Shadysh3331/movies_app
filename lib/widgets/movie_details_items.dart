@@ -21,9 +21,14 @@ class MovieDetailsItems extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    movieDetailsResponse.title ?? "",
-                    style: Theme.of(context).textTheme.bodyLarge,
+                  Container(
+                    width: MediaQuery.of(context).size.width*.77,
+                    child: Text(
+                      movieDetailsResponse.title ?? "",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   SizedBox(width: 4),
                   Icon(Icons.star, color: MyThemeData.yellowColor, size: 18),

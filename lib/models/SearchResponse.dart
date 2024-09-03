@@ -1,7 +1,9 @@
 class SearchResponse {
   SearchResponse({
       this.page, 
-      this.results, 
+      this.statusCode,
+      this.statusMessage,
+      this.results,
       this.totalPages, 
       this.totalResults,});
 
@@ -14,13 +16,16 @@ class SearchResponse {
       });
     }
     totalPages = json['total_pages'];
+    statusMessage = json['status_message'];
+    statusCode = json['status_code'];
     totalResults = json['total_results'];
   }
   int? page;
+  String? statusMessage;
+  int? statusCode;
   List<SearchResults>? results;
   int? totalPages;
   int? totalResults;
-
 
 
 }

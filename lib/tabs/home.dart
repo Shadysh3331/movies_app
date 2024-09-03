@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/apis/api_manager.dart';
+import 'package:movie_app/models/user_model.dart';
 import 'package:movie_app/my_theme_data.dart';
+import 'package:movie_app/utils.dart';
 import 'package:movie_app/widgets/popular_items.dart';
 import 'package:movie_app/widgets/top_rated_items.dart';
 import 'package:movie_app/widgets/upcoming_items.dart';
@@ -27,7 +29,13 @@ class Home extends StatelessWidget {
               CarouselSlider.builder(
                   itemCount: popular.length,
                   itemBuilder: (context, index, realIndex) {
-                    return PopularItems(results: popular[index]);
+                    UserModel userModel = UserModel(
+                      image: "$imageUrl${popular[index].posterPath}",
+                      title: popular[index].title ?? "",
+                      releaseDate: popular[index].releaseDate?.substring(0, 4) ?? "",
+                      isDone: false,
+                    );
+                    return PopularItems(results: popular[index],model: userModel,);
                   },
                   options: CarouselOptions(
                     viewportFraction: 1,
@@ -72,8 +80,15 @@ class Home extends StatelessWidget {
                                 },
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
+                                  UserModel userModel = UserModel(
+                                    image: "$imageUrl${upcoming[index].posterPath}",
+                                    title: upcoming[index].title ?? "",
+                                    releaseDate: upcoming[index].releaseDate?.substring(0, 4) ?? "",
+                                    isDone: false,
+                                  );
                                   return UpcomingItems(
                                     upcomingResults: upcoming[index],
+                                    model: userModel,
                                   );
                                 },
                                 itemCount: upcoming.length,
@@ -124,7 +139,13 @@ class Home extends StatelessWidget {
                                 },
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
-                                  return TopRatedItems(topRatedResults: topRated[index]);
+                                  UserModel userModel = UserModel(
+                                    image: "$imageUrl${topRated[index].posterPath}",
+                                    title: topRated[index].title ?? "",
+                                    releaseDate: topRated[index].releaseDate?.substring(0, 4) ?? "",
+                                    isDone: false,
+                                  );
+                                  return TopRatedItems(topRatedResults: topRated[index],model: userModel,);
                                 },
                                 itemCount: topRated.length,
                               ),

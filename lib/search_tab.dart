@@ -47,6 +47,7 @@ class SearchTab extends SearchDelegate{
         } if (snapshot.hasError) {
           return Center(child: Text("something went wrong"));
         }
+
         var search = snapshot.data?.results??[];
         return ListView.separated(
           separatorBuilder: (context, index) {

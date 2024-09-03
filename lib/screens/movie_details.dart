@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/apis/api_manager.dart';
 import 'package:movie_app/models/MovieDetailsResponse.dart';
+import 'package:movie_app/models/user_model.dart';
+import 'package:movie_app/utils.dart';
 import 'package:movie_app/widgets/movie_details_items.dart';
 import 'package:movie_app/widgets/more_like_this_items.dart';
 import 'package:movie_app/my_theme_data.dart';
 
 class MovieDetails extends StatelessWidget {
   static const String routName = "details";
+
   const MovieDetails({super.key});
 
   @override
@@ -49,40 +52,53 @@ class MovieDetails extends StatelessWidget {
                     child: FutureBuilder(
                       future: ApiManager.getMoreLikeThis(movieId),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         }
                         if (snapshot.hasError) {
                           return Center(child: Text("something went wrong"));
                         }
-                        var moreLikeThisItems = snapshot.data?.results??[];
+                        var moreLikeThisItems = snapshot.data?.results ?? [];
                         return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "More Like This",
-                                  style: Theme.of(context).textTheme.bodyLarge,
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "More Like This",
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Expanded(
+                                child: ListView.separated(
+                                  separatorBuilder: (context, index) {
+                                    return SizedBox(width: 12);
+                                  },
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    UserModel userModel = UserModel(
+                                      image: "$imageUrl${moreLikeThisItems[index].posterPath}",
+                                      title:
+                                          moreLikeThisItems[index].title ?? "",
+                                      releaseDate: moreLikeThisItems[index]
+                                              .releaseDate
+                                              ?.substring(0, 4) ?? "",
+                                      isDone: false,
+                                    );
+                                    return MoreLikeThisItems(
+                                      moreLikeThisResults: moreLikeThisItems[index],
+                                      model: userModel,
+                                    );
+                                  },
+                                  itemCount: moreLikeThisItems.length,
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Expanded(
-                                  child: ListView.separated(
-                                    separatorBuilder: (context, index) {
-                                      return SizedBox(width: 12);
-                                    },
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return MoreLikeThisItems(moreLikeThisResults: moreLikeThisItems[index]);
-                                    },
-                                    itemCount: moreLikeThisItems.length,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
+                              ),
+                            ],
+                          ),
+                        );
                       },
                     ),
                   ),
