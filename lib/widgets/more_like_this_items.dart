@@ -23,7 +23,7 @@ class _MoreLikeThisItemsState extends State<MoreLikeThisItems> {
         image: "$imageUrl${widget.moreLikeThisResults.posterPath}",
         title: widget.moreLikeThisResults.title ?? "",
         releaseDate: widget.moreLikeThisResults.releaseDate?.substring(0, 4) ?? "",
-        isDone: false,
+        isDone: widget.model.isDone,
       );
 
       FirebaseFunctions().addUser(userModel);

@@ -21,8 +21,7 @@ class MovieDetailsItems extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width*.77,
+                  Expanded(
                     child: Text(
                       movieDetailsResponse.title ?? "",
                       style: Theme.of(context).textTheme.bodyLarge,

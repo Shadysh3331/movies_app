@@ -25,7 +25,7 @@ class _TopRatedItemsState extends State<TopRatedItems> {
         image: "$imageUrl${widget.topRatedResults.posterPath}",
         title: widget.topRatedResults.title ?? "",
         releaseDate: widget.topRatedResults.releaseDate?.substring(0, 4) ?? "",
-        isDone: false,
+        isDone: widget.model.isDone,
       );
 
       FirebaseFunctions().addUser(userModel);

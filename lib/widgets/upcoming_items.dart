@@ -24,7 +24,7 @@ class _UpcomingItemsState extends State<UpcomingItems> {
         image: "$imageUrl${widget.upcomingResults.posterPath}",
         title: widget.upcomingResults.title ?? "",
         releaseDate: widget.upcomingResults.releaseDate?.substring(0, 4) ?? "",
-        isDone: false,
+        isDone: widget.model.isDone,
       );
 
       FirebaseFunctions().addUser(userModel);

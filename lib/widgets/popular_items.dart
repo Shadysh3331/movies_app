@@ -22,7 +22,7 @@ class _PopularItemsState extends State<PopularItems> {
       image: "$imageUrl${widget.results.posterPath}",
       title: widget.results.title ?? "",
       releaseDate: widget.results.releaseDate?.substring(0, 4) ?? "",
-      isDone: false,
+      isDone: widget.model.isDone,
     );
 
     FirebaseFunctions().addUser(userModel);
@@ -74,16 +74,16 @@ class _PopularItemsState extends State<PopularItems> {
                         child: Container(
                           height: 40,
                           width: 40,
-                          color: widget.model.isDone ? MyThemeData.yellowColor : Color(0xff514F4F),
+                          color: widget.model.isDone
+                              ? MyThemeData.yellowColor
+                              : Color(0xff514F4F),
                           child: IconButton(
                               iconSize: 25,
                               color: Colors.white,
                               onPressed: () {
                                 widget.model.isDone = true;
                                 addToWatchlist(context);
-                                setState(() {
-
-                                });
+                                setState(() {});
                               },
                               icon: widget.model.isDone
                                   ? Icon(
@@ -91,8 +91,7 @@ class _PopularItemsState extends State<PopularItems> {
                                     )
                                   : Icon(
                                       Icons.add,
-                                    )
-                              ),
+                                    )),
                         ),
                       ),
                     )
@@ -106,8 +105,12 @@ class _PopularItemsState extends State<PopularItems> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 130.0),
-                      child: Text(widget.results.title ?? "",
-                          style: Theme.of(context).textTheme.bodyMedium,),
+                      child: Text(
+                        widget.results.title ?? "",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     Text(widget.results.releaseDate?.substring(0, 4) ?? "",
                         style: Theme.of(context).textTheme.bodySmall),
