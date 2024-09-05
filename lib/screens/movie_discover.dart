@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/apis/api_manager.dart';
+import 'package:movie_app/models/genre.dart';
 import 'package:movie_app/widgets/movie_discover_items.dart';
 
 class MovieDiscover extends StatelessWidget {
@@ -9,15 +10,15 @@ class MovieDiscover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var args = ModalRoute.of(context)?.settings.arguments as Map<String,dynamic>;
-     int genreId = args['genreId'];
-    String genreName = args['genreName'];
+    var args = ModalRoute.of(context)?.settings.arguments as Genre;
+    int? genreId = args.genreId;
+    String? genreName = args.genreName;
     return Scaffold(
       appBar: AppBar(
         title: Text("Movies From $genreName"),
       ),
       body: FutureBuilder(
-        future: ApiManager.getMovieDiscover(genreId),
+        future: ApiManager.getMovieDiscover(genreId!),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

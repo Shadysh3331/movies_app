@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/models/BrowseResponse.dart';
+import 'package:movie_app/models/genre.dart';
 import 'package:movie_app/screens/movie_discover.dart';
 
 class BrowseItem extends StatelessWidget {
@@ -22,10 +23,8 @@ class BrowseItem extends StatelessWidget {
     String imagePath = genreImages[genres.name] ?? 'assets/images/category.jpg';
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, MovieDiscover.routName, arguments: {
-          'genreId': genres.id,
-          'genreName': genres.name,
-        });
+        Navigator.pushNamed(context, MovieDiscover.routName,
+            arguments: Genre(genres.id,genres.name));
       },
       child: Stack(
         children: [
